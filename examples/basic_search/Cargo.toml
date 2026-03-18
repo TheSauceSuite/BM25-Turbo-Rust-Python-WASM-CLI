@@ -1,0 +1,12 @@
+[package]
+name = "basic-search"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[[bin]]
+name = "basic-search"
+path = "main.rs"
+
+[dependencies]
+bm25_turbo = { path = "../../bm25_turbo", default-features = false }

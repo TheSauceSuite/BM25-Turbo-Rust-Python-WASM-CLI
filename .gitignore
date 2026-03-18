@@ -1,0 +1,61 @@
+# Rust
+/target/
+**/*.rs.bk
+Cargo.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+*.so
+*.dylib
+*.dll
+.venv/
+venv/
+
+# WASM / Node
+node_modules/
+pkg/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.*
+
+# Benchmark data (large datasets)
+beir_cache/
+MSMARCO/
+
+# Reference materials (not part of distribution)
+Reference Project to Convert in Rust/
+
+# Nova project management
+.nova/
+
+# Claude Code
+.claude/
+CLAUDE.md
+
+# Cargo config
+.cargo/
+
+# Example build artifacts
+examples/*/target/
+examples/*/Cargo.lock
+
+# Benchmark comparison scripts (internal tooling)
+benchmarks/compare/
+benchmarks/METHODOLOGY.md
+benchmarks/tests/*.proptest-regressions

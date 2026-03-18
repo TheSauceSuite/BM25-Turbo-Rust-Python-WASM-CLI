@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: -D warnings
+
+jobs:
+  check:
+    name: Check & Clippy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo clippy -p bm25_turbo -p bm25-turbo-cli --all-targets
+
+  test:
+    name: Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo test -p bm25_turbo -p bm25-turbo-cli
+
+  bench:
+    name: Benchmarks (compile check)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo check -p bm25-turbo-bench --bins --benches
+      - name: Check example crates compile
+        run: |
+          cargo check --manifest-path examples/basic_search/Cargo.toml
+          cargo check --manifest-path examples/persistence/Cargo.toml
+          cargo check --manifest-path examples/http_server/Cargo.toml
+          cargo check --manifest-path examples/streaming_index/Cargo.toml
+
+  python:
+    name: Python bindings
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install maturin
+      - run: maturin build -m bm25-turbo-python/Cargo.toml --release
+      - run: pip install --find-links target/wheels bm25-turbo
+      - run: python -c "from bm25_turbo_python import BM25; e = BM25(); e.index(['hello world', 'foo bar']); print(e.search('hello', k=1))"
+
+  release-build:
+    name: Release build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo build --release -p bm25_turbo -p bm25-turbo-cli
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bm25-turbo-linux
+          path: target/release/bm25-turbo

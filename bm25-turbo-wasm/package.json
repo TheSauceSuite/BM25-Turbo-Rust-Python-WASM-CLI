@@ -1,0 +1,29 @@
+{
+  "name": "bm25-turbo",
+  "version": "0.1.0",
+  "description": "The fastest BM25 search engine, compiled to WebAssembly",
+  "main": "bm25_turbo_wasm.js",
+  "module": "bm25_turbo_wasm.js",
+  "types": "bm25_turbo_wasm.d.ts",
+  "files": [
+    "bm25_turbo_wasm_bg.wasm",
+    "bm25_turbo_wasm.js",
+    "bm25_turbo_wasm.d.ts"
+  ],
+  "keywords": [
+    "bm25",
+    "search",
+    "information-retrieval",
+    "wasm",
+    "webassembly",
+    "full-text-search"
+  ],
+  "license": "MIT OR Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TheSauceSuite/BM25-Turbo-Rust-Python-WASM-CLI-"
+  },
+  "sideEffects": [
+    "bm25_turbo_wasm.js"
+  ]
+}

@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package bm25;
+
+// BM25 Shard service -- each shard hosts a partition of the corpus.
+service BM25Shard {
+    // Execute a search query on this shard's local index.
+    rpc Search(SearchRequest) returns (SearchResponse);
+
+    // Collect inverse document frequency statistics from this shard.
+    rpc CollectIdf(IdfRequest) returns (IdfResponse);
+
+    // Health check for the shard.
+    rpc Health(HealthRequest) returns (HealthResponse);
+
+    // Apply global IDF values to this shard for correct cross-shard scoring.
+    rpc ApplyGlobalIdf(GlobalIdfUpdate) returns (GlobalIdfAck);
+}
+
+// Search request sent from coordinator to each shard.
+message SearchRequest {
+    // The query string to search for.
+    string query = 1;
+    // Number of top results to return from this shard.
+    uint32 top_k = 2;
+    // Per-shard k (may be larger than top_k for merge quality).
+    uint32 shard_k = 3;
+}
+
+// A single scored document result.
+message SearchResult {
+    // Document ID (local to the shard, or global if offset applied).
+    uint32 doc_id = 1;
+    // BM25 relevance score.
+    float score = 2;
+}
+
+// Search response from a shard.
+message SearchResponse {
+    // Matching documents sorted by descending score.
+    repeated SearchResult results = 1;
+    // Query latency on this shard in milliseconds.
+    double latency_ms = 2;
+}
+
+// Request to collect IDF statistics from a shard.
+message IdfRequest {
+    // Term IDs to collect document frequencies for.
+    // If empty, return stats for all terms.
+    repeated uint32 term_ids = 1;
+}
+
+// IDF statistics response from a shard.
+message IdfResponse {
+    // Document frequencies for each requested term (same order as term_ids).
+    repeated uint32 doc_freqs = 1;
+    // Total number of documents on this shard.
+    uint64 total_docs = 2;
+}
+
+// Health check request.
+message HealthRequest {}
+
+// Health check response.
+message HealthResponse {
+    // Whether the shard is ready to serve queries.
+    bool ready = 1;
+    // Number of documents in the shard's index.
+    uint32 num_docs = 2;
+    // Number of vocabulary terms.
+    uint32 vocab_size = 3;
+}
+
+// Global IDF values to push to a shard.
+message GlobalIdfUpdate {
+    // Global IDF value for each term in the vocabulary.
+    // Length must equal the shard's vocab_size.
+    repeated float global_idf_values = 1;
+    // Total documents across all shards.
+    uint64 global_total_docs = 2;
+}
+
+// Acknowledgment after applying global IDF.
+message GlobalIdfAck {
+    // Whether the update was successfully applied.
+    bool success = 1;
+    // Error message if not successful.
+    string error = 2;
+}

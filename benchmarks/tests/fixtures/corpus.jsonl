@@ -1,0 +1,10 @@
+{"_id": "doc0", "title": "Introduction to Information Retrieval", "text": "Information retrieval is the activity of obtaining resources relevant to an information need."}
+{"_id": "doc1", "title": "BM25 Scoring", "text": "BM25 is a ranking function used by search engines to estimate the relevance of documents to a given search query."}
+{"_id": "doc2", "title": "Inverted Index", "text": "An inverted index is a database index storing a mapping from content to its locations in a table or document."}
+{"_id": "doc3", "title": "Term Frequency", "text": "Term frequency measures how frequently a term occurs in a document. The simplest choice is the raw count."}
+{"_id": "doc4", "title": "Document Frequency", "text": "Document frequency is the number of documents in the collection that contain a specific term."}
+{"_id": "doc5", "title": "TF-IDF Weighting", "text": "TF-IDF is a numerical statistic intended to reflect how important a word is to a document in a collection."}
+{"_id": "doc6", "title": "Precision and Recall", "text": "Precision is the fraction of retrieved documents that are relevant. Recall is the fraction of relevant documents that are retrieved."}
+{"_id": "doc7", "title": "NDCG Metric", "text": "Normalized discounted cumulative gain is a measure of ranking quality used in information retrieval."}
+{"_id": "doc8", "title": "BEIR Benchmark", "text": "BEIR is a heterogeneous benchmark containing diverse IR tasks for zero-shot evaluation of retrieval models."}
+{"_id": "doc9", "title": "Sparse Retrieval", "text": "Sparse retrieval methods like BM25 represent queries and documents as sparse vectors over the vocabulary."}

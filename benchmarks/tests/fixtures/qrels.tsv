@@ -1,0 +1,9 @@
+query-id	corpus-id	score
+q0	doc1	3
+q0	doc9	2
+q0	doc5	1
+q1	doc2	3
+q1	doc0	1
+q2	doc7	3
+q2	doc6	2
+q2	doc8	1

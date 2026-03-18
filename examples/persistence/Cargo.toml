@@ -1,0 +1,12 @@
+[package]
+name = "persistence-example"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[[bin]]
+name = "persistence-example"
+path = "main.rs"
+
+[dependencies]
+bm25_turbo = { path = "../../bm25_turbo", features = ["persistence"], default-features = false }

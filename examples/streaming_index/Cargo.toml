@@ -1,0 +1,12 @@
+[package]
+name = "streaming-index-example"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[[bin]]
+name = "streaming-index-example"
+path = "main.rs"
+
+[dependencies]
+bm25_turbo = { path = "../../bm25_turbo", default-features = false }

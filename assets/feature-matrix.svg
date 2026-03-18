@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 580" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">
+  <defs>
+    <linearGradient id="header" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1e1b4b"/>
+      <stop offset="100%" style="stop-color:#312e81"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="580" rx="12" fill="#0d1117"/>
+
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" fill="#e6edf3" font-size="16" font-weight="600">Feature Comparison</text>
+
+  <!-- Header row -->
+  <rect x="20" y="50" width="760" height="36" rx="6" fill="url(#header)"/>
+  <text x="140" y="73" text-anchor="middle" fill="#c7d2fe" font-size="11" font-weight="600">Feature</text>
+  <text x="310" y="73" text-anchor="middle" fill="#a5b4fc" font-size="11" font-weight="700">BM25 Turbo</text>
+  <text x="430" y="73" text-anchor="middle" fill="#c7d2fe" font-size="11" font-weight="600">bm25s</text>
+  <text x="540" y="73" text-anchor="middle" fill="#c7d2fe" font-size="11" font-weight="600">Tantivy</text>
+  <text x="660" y="73" text-anchor="middle" fill="#c7d2fe" font-size="11" font-weight="600">Elasticsearch</text>
+
+  <!-- Row helper: alternating backgrounds -->
+  <rect x="20" y="86" width="760" height="30" rx="0" fill="#161b22"/>
+  <rect x="20" y="116" width="760" height="30" rx="0" fill="#0d1117"/>
+  <rect x="20" y="146" width="760" height="30" rx="0" fill="#161b22"/>
+  <rect x="20" y="176" width="760" height="30" rx="0" fill="#0d1117"/>
+  <rect x="20" y="206" width="760" height="30" rx="0" fill="#161b22"/>
+  <rect x="20" y="236" width="760" height="30" rx="0" fill="#0d1117"/>
+  <rect x="20" y="266" width="760" height="30" rx="0" fill="#161b22"/>
+  <rect x="20" y="296" width="760" height="30" rx="0" fill="#0d1117"/>
+  <rect x="20" y="326" width="760" height="30" rx="0" fill="#161b22"/>
+  <rect x="20" y="356" width="760" height="30" rx="0" fill="#0d1117"/>
+  <rect x="20" y="386" width="760" height="30" rx="0" fill="#161b22"/>
+  <rect x="20" y="416" width="760" height="30" rx="0" fill="#0d1117"/>
+  <rect x="20" y="446" width="760" height="30" rx="0" fill="#161b22"/>
+  <rect x="20" y="476" width="760" height="30" rx="0" fill="#0d1117"/>
+  <rect x="20" y="506" width="760" height="30" rx="0" fill="#161b22"/>
+  <rect x="20" y="536" width="760" height="30" rx="0" fill="#0d1117"/>
+
+  <!-- Language row -->
+  <text x="140" y="106" text-anchor="middle" fill="#7d8590" font-size="11">Language</text>
+  <text x="310" y="106" text-anchor="middle" fill="#e6edf3" font-size="11" font-weight="600">Rust</text>
+  <text x="430" y="106" text-anchor="middle" fill="#e6edf3" font-size="11">Python</text>
+  <text x="540" y="106" text-anchor="middle" fill="#e6edf3" font-size="11">Rust</text>
+  <text x="660" y="106" text-anchor="middle" fill="#e6edf3" font-size="11">Java</text>
+
+  <!-- QPS row -->
+  <text x="140" y="136" text-anchor="middle" fill="#7d8590" font-size="11">QPS (8.8M docs)</text>
+  <text x="310" y="136" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">28,217</text>
+  <text x="430" y="136" text-anchor="middle" fill="#f87171" font-size="11">~12</text>
+  <text x="540" y="136" text-anchor="middle" fill="#fbbf24" font-size="11">~12,000</text>
+  <text x="660" y="136" text-anchor="middle" fill="#f87171" font-size="11">~800</text>
+
+  <!-- BM25 variants -->
+  <text x="140" y="166" text-anchor="middle" fill="#7d8590" font-size="11">BM25 Variants</text>
+  <text x="310" y="166" text-anchor="middle" fill="#34d399" font-size="11" font-weight="600">5</text>
+  <text x="430" y="166" text-anchor="middle" fill="#e6edf3" font-size="11">1</text>
+  <text x="540" y="166" text-anchor="middle" fill="#e6edf3" font-size="11">1</text>
+  <text x="660" y="166" text-anchor="middle" fill="#e6edf3" font-size="11">1</text>
+
+  <!-- BMW Pruning -->
+  <text x="140" y="196" text-anchor="middle" fill="#7d8590" font-size="11">BMW Pruning</text>
+  <text x="310" y="196" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+  <text x="430" y="196" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+  <text x="540" y="196" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+  <text x="660" y="196" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+
+  <!-- Memory-Mapped -->
+  <text x="140" y="226" text-anchor="middle" fill="#7d8590" font-size="11">Memory-Mapped</text>
+  <text x="310" y="226" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+  <text x="430" y="226" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+  <text x="540" y="226" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+  <text x="660" y="226" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+
+  <!-- Streaming Indexer -->
+  <text x="140" y="256" text-anchor="middle" fill="#7d8590" font-size="11">Streaming Indexer</text>
+  <text x="310" y="256" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+  <text x="430" y="256" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+  <text x="540" y="256" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+  <text x="660" y="256" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+
+  <!-- WAL -->
+  <text x="140" y="286" text-anchor="middle" fill="#7d8590" font-size="11">Incremental Updates</text>
+  <text x="310" y="286" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+  <text x="430" y="286" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+  <text x="540" y="286" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+  <text x="660" y="286" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+
+  <!-- Python Bindings -->
+  <text x="140" y="316" text-anchor="middle" fill="#7d8590" font-size="11">Python Bindings</text>
+  <text x="310" y="316" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+  <text x="430" y="316" text-anchor="middle" fill="#34d399" font-size="11">Native</text>
+  <text x="540" y="316" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+  <text x="660" y="316" text-anchor="middle" fill="#e6edf3" font-size="11">Client</text>
+
+  <!-- WASM -->
+  <text x="140" y="346" text-anchor="middle" fill="#7d8590" font-size="11">WASM Support</text>
+  <text x="310" y="346" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+  <text x="430" y="346" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+  <text x="540" y="346" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+  <text x="660" y="346" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+
+  <!-- HuggingFace -->
+  <text x="140" y="376" text-anchor="middle" fill="#7d8590" font-size="11">HuggingFace Hub</text>
+  <text x="310" y="376" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+  <text x="430" y="376" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+  <text x="540" y="376" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+  <text x="660" y="376" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+
+  <!-- MCP Server -->
+  <text x="140" y="406" text-anchor="middle" fill="#7d8590" font-size="11">MCP Server</text>
+  <text x="310" y="406" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+  <text x="430" y="406" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+  <text x="540" y="406" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+  <text x="660" y="406" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+
+  <!-- HTTP Server -->
+  <text x="140" y="436" text-anchor="middle" fill="#7d8590" font-size="11">HTTP Server</text>
+  <text x="310" y="436" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+  <text x="430" y="436" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+  <text x="540" y="436" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+  <text x="660" y="436" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+
+  <!-- Distributed -->
+  <text x="140" y="466" text-anchor="middle" fill="#7d8590" font-size="11">Distributed Search</text>
+  <text x="310" y="466" text-anchor="middle" fill="#34d399" font-size="11">gRPC</text>
+  <text x="430" y="466" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+  <text x="540" y="466" text-anchor="middle" fill="#e6edf3" font-size="11">Quickwit</text>
+  <text x="660" y="466" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+
+  <!-- Phrase queries -->
+  <text x="140" y="496" text-anchor="middle" fill="#7d8590" font-size="11">Phrase Queries</text>
+  <text x="310" y="496" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+  <text x="430" y="496" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+  <text x="540" y="496" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+  <text x="660" y="496" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+
+  <!-- Facets -->
+  <text x="140" y="526" text-anchor="middle" fill="#7d8590" font-size="11">Facets / Filters</text>
+  <text x="310" y="526" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+  <text x="430" y="526" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+  <text x="540" y="526" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+  <text x="660" y="526" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+
+  <!-- Zero infra -->
+  <text x="140" y="556" text-anchor="middle" fill="#7d8590" font-size="11">Zero Infrastructure</text>
+  <text x="310" y="556" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+  <text x="430" y="556" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+  <text x="540" y="556" text-anchor="middle" fill="#34d399" font-size="14">✓</text>
+  <text x="660" y="556" text-anchor="middle" fill="#484f58" font-size="14">✗</text>
+</svg>

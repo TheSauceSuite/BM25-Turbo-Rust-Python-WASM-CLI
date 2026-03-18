@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 350" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#a78bfa"/>
+    </linearGradient>
+    <linearGradient id="area" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:#6366f1;stop-opacity:0.02"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="350" rx="12" fill="#0d1117"/>
+
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" fill="#e6edf3" font-size="16" font-weight="600">Scaling: Latency vs Corpus Size</text>
+  <text x="400" y="55" text-anchor="middle" fill="#7d8590" font-size="12">P50 query latency · BMW pruning enabled · log scale</text>
+
+  <!-- Chart area -->
+  <!-- Y-axis labels -->
+  <text x="85" y="95" text-anchor="end" fill="#7d8590" font-size="11">100ms</text>
+  <text x="85" y="145" text-anchor="end" fill="#7d8590" font-size="11">10ms</text>
+  <text x="85" y="195" text-anchor="end" fill="#7d8590" font-size="11">1ms</text>
+  <text x="85" y="245" text-anchor="end" fill="#7d8590" font-size="11">100μs</text>
+  <text x="85" y="295" text-anchor="end" fill="#7d8590" font-size="11">10μs</text>
+
+  <!-- Grid lines -->
+  <line x1="100" y1="90" x2="750" y2="90" stroke="#21262d" stroke-width="1"/>
+  <line x1="100" y1="140" x2="750" y2="140" stroke="#21262d" stroke-width="1"/>
+  <line x1="100" y1="190" x2="750" y2="190" stroke="#21262d" stroke-width="1"/>
+  <line x1="100" y1="240" x2="750" y2="240" stroke="#21262d" stroke-width="1"/>
+  <line x1="100" y1="290" x2="750" y2="290" stroke="#21262d" stroke-width="1"/>
+
+  <!-- X-axis labels -->
+  <text x="180" y="315" text-anchor="middle" fill="#7d8590" font-size="11">5K docs</text>
+  <text x="180" y="328" text-anchor="middle" fill="#484f58" font-size="9">SciFact</text>
+  <text x="420" y="315" text-anchor="middle" fill="#7d8590" font-size="11">57K docs</text>
+  <text x="420" y="328" text-anchor="middle" fill="#484f58" font-size="9">FiQA</text>
+  <text x="680" y="315" text-anchor="middle" fill="#7d8590" font-size="11">8.8M docs</text>
+  <text x="680" y="328" text-anchor="middle" fill="#484f58" font-size="9">MS MARCO</text>
+
+  <!-- Area fill -->
+  <polygon points="180,267 420,197 680,137 680,290 420,290 180,290" fill="url(#area)"/>
+
+  <!-- Line -->
+  <polyline points="180,267 420,197 680,137" fill="none" stroke="url(#grad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Data points with glow -->
+  <circle cx="180" cy="267" r="6" fill="#6366f1" filter="url(#glow)"/>
+  <circle cx="420" cy="197" r="6" fill="#818cf8" filter="url(#glow)"/>
+  <circle cx="680" cy="137" r="6" fill="#a78bfa" filter="url(#glow)"/>
+
+  <!-- Data labels -->
+  <rect x="140" y="243" width="80" height="22" rx="11" fill="#6366f1" fill-opacity="0.2" stroke="#6366f1" stroke-opacity="0.4"/>
+  <text x="180" y="258" text-anchor="middle" fill="#a5b4fc" font-size="11" font-weight="600">67 μs</text>
+
+  <rect x="380" y="173" width="80" height="22" rx="11" fill="#818cf8" fill-opacity="0.2" stroke="#818cf8" stroke-opacity="0.4"/>
+  <text x="420" y="188" text-anchor="middle" fill="#a5b4fc" font-size="11" font-weight="600">711 μs</text>
+
+  <rect x="640" y="113" width="80" height="22" rx="11" fill="#a78bfa" fill-opacity="0.2" stroke="#a78bfa" stroke-opacity="0.4"/>
+  <text x="680" y="128" text-anchor="middle" fill="#a5b4fc" font-size="11" font-weight="600">8.6 ms</text>
+
+  <!-- QPS annotations -->
+  <text x="180" y="283" text-anchor="middle" fill="#484f58" font-size="9">682K QPS</text>
+  <text x="420" y="213" text-anchor="middle" fill="#484f58" font-size="9">50K QPS</text>
+  <text x="680" y="153" text-anchor="middle" fill="#484f58" font-size="9">28K QPS</text>
+</svg>

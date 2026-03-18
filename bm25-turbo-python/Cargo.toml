@@ -1,0 +1,17 @@
+[package]
+name = "bm25-turbo-python"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Python bindings for BM25 Turbo"
+
+[lib]
+name = "bm25_turbo_python"
+crate-type = ["cdylib"]
+
+[dependencies]
+bm25_turbo = { version = "0.1.0", path = "../bm25_turbo", features = ["parallel", "persistence", "simd"] }
+pyo3 = { version = "0.23", features = ["extension-module"] }
+numpy = "0.23"

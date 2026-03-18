@@ -1,0 +1,27 @@
+[workspace]
+members = [
+    "bm25_turbo",
+    "bm25-turbo-cli",
+    "bm25-turbo-python",
+    "bm25-turbo-wasm",
+    "benchmarks",
+]
+exclude = [
+    "examples/basic_search",
+    "examples/persistence",
+    "examples/http_server",
+    "examples/streaming_index",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/TheSauceSuite/BM25-Turbo-Rust-Python-WASM-CLI-"
+homepage = "https://github.com/TheSauceSuite/BM25-Turbo-Rust-Python-WASM-CLI-"
+description = "The fastest BM25 information retrieval engine — 28K QPS on 8.8M docs"
+keywords = ["bm25", "search", "information-retrieval", "ranking", "nlp"]
+categories = ["algorithms", "text-processing", "database-implementations"]
+authors = ["The Sauce Suite"]
