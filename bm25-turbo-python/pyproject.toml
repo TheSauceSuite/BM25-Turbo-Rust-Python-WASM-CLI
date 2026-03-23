@@ -9,7 +9,7 @@ description = "The fastest BM25 information retrieval engine -- Python bindings"
 license = { text = "MIT OR Apache-2.0" }
 requires-python = ">=3.9"
 authors = [{ name = "The Sauce Suite" }]
-readme = "../README.md"
+readme = "README.md"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
