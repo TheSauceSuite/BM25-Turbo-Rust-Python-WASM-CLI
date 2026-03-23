@@ -1,6 +1,6 @@
 # bm25-turbo
 
-The fastest BM25 full-text search engine, compiled to WebAssembly.
+The fastest BM25 scoring engine, compiled to WebAssembly.
 
 BM25 Turbo is a Rust-native BM25 information retrieval engine that supports 5 scoring variants (Robertson, Lucene, ATIRE, BM25L, BM25+), 17-language tokenization with Snowball stemming, and compressed sparse column storage. This package brings the full engine to the browser and Node.js via WebAssembly.
 

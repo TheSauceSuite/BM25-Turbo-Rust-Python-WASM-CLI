@@ -72,6 +72,7 @@ fn generate_corpus(n: usize) -> Vec<String> {
 // 1. BMW/WAND: build_bmw_index then search_approximate returns results
 // ===========================================================================
 
+#[cfg(feature = "ann")]
 #[test]
 fn bmw_build_then_search_returns_results() {
     let mut index = build_small_index();
@@ -93,6 +94,7 @@ fn bmw_build_then_search_returns_results() {
 // 2. search_approximate results are a subset of exact results
 // ===========================================================================
 
+#[cfg(feature = "ann")]
 #[test]
 fn bmw_results_subset_of_exact() {
     let mut index = build_small_index();
@@ -116,6 +118,7 @@ fn bmw_results_subset_of_exact() {
 // 3. search_approximate with k=1 returns the top-1 document
 // ===========================================================================
 
+#[cfg(feature = "ann")]
 #[test]
 fn bmw_k1_returns_top_document() {
     let mut index = build_small_index();
@@ -135,6 +138,7 @@ fn bmw_k1_returns_top_document() {
 // 4. search_approximate on empty query returns empty
 // ===========================================================================
 
+#[cfg(feature = "ann")]
 #[test]
 fn bmw_empty_query_returns_empty() {
     let mut index = build_small_index();
@@ -149,6 +153,7 @@ fn bmw_empty_query_returns_empty() {
 // 5. search_approximate with k > num_docs returns all matching docs
 // ===========================================================================
 
+#[cfg(feature = "ann")]
 #[test]
 fn bmw_k_larger_than_corpus() {
     let mut index = build_small_index();
@@ -170,6 +175,7 @@ fn bmw_k_larger_than_corpus() {
 // 6. build_bmw_index_with_block_size with 64, 128, 256 all produce valid results
 // ===========================================================================
 
+#[cfg(feature = "ann")]
 #[test]
 fn bmw_block_sizes_64_128_256() {
     let mut index = build_small_index();
@@ -204,6 +210,7 @@ fn bmw_block_sizes_64_128_256() {
 // 7. BMW index on single-document corpus
 // ===========================================================================
 
+#[cfg(feature = "ann")]
 #[test]
 fn bmw_single_document_corpus() {
     let mut index = BM25Builder::new()
@@ -466,6 +473,7 @@ fn wal_full_lifecycle() {
 // 17. WAL with BMW: add docs via WAL, search_approximate still works
 // ===========================================================================
 
+#[cfg(feature = "ann")]
 #[test]
 fn wal_with_bmw() {
     let mut index = build_small_index();
@@ -884,6 +892,7 @@ fn cross_feature_custom_tokenizer_persistence() {
 // 33. Streaming build -> save -> mmap_load -> BMW index -> search_approximate
 // ===========================================================================
 
+#[cfg(feature = "ann")]
 #[test]
 fn cross_feature_streaming_save_mmap_bmw() {
     let dir = tempdir().unwrap();

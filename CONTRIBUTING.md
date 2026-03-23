@@ -77,8 +77,8 @@ cargo build --release -p bm25-turbo-cli
 
 # Quick smoke test
 echo '{"id":"1","text":"hello world"}' > /tmp/test.jsonl
-./target/release/bm25-turbo index --input /tmp/test.jsonl --output /tmp/test.bin
-./target/release/bm25-turbo search --index /tmp/test.bin --query "hello" --top 5
+./target/release/bm25-turbo index --input /tmp/test.jsonl --output /tmp/test.bin --field text
+./target/release/bm25-turbo search --index /tmp/test.bin --query "hello" -k 5
 ./target/release/bm25-turbo serve --index /tmp/test.bin --port 8080
 ```
 

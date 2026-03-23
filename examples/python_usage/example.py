@@ -8,7 +8,7 @@ Run:
     python examples/python_usage/example.py
 """
 
-from bm25_turbo import BM25
+from bm25_turbo_python import BM25
 
 # --- Build an index -----------------------------------------------------------
 
@@ -22,7 +22,8 @@ corpus = [
 
 engine = BM25(method="lucene", k1=1.5, b=0.75)
 engine.index(corpus)
-print(f"Indexed {engine.num_docs()} documents, vocab size: {engine.vocab_size()}")
+stats = engine.stats()
+print(f"Indexed {stats['num_docs']} documents, vocab size: {stats['vocab_size']}")
 
 # --- Search -------------------------------------------------------------------
 

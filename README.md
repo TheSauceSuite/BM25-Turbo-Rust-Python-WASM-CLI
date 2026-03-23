@@ -95,15 +95,14 @@ All variants support tunable `k1`, `b`, and `delta` parameters.
 Skip non-competitive documents during top-k retrieval. Essential for million-document corpora:
 
 ```rust
-let index = BM25Builder::new()
+let mut index = BM25Builder::new()
     .build_from_corpus(&corpus)?;
 
-// BMW pruning via WAL's query strategy
-let wal = index.enable_wal()?;
-let results = index.search_with_strategy(
-    &wal, "distributed systems", 10,
-    bm25_turbo::wal::QueryStrategy::Fast, // BMW pruning
-)?;
+// Build block-max index (one-time cost)
+index.build_bmw_index()?;
+
+// Queries now skip non-competitive blocks automatically
+let results = index.search_approximate("distributed systems", 10)?;
 ```
 
 BMW partitions the score matrix into blocks and maintains per-block upper bounds. During query evaluation, entire blocks are skipped when their maximum possible contribution can't beat the current k-th best score. This reduces the number of documents touched from millions to thousands.
@@ -172,31 +171,30 @@ use rust_stemmers::Algorithm;
 let tokenizer = Tokenizer::builder()
     .stemmer(Algorithm::English)
     .stopwords(vec!["the".into(), "a".into(), "an".into(), "is".into()])
-    .build();
+    .build()?;
 
 let tokens = tokenizer.tokenize("Running distributed systems at scale");
 // → ["run", "distribut", "system", "scale"]
 ```
 
-Supported languages: Arabic, Danish, Dutch, English, Finnish, French, German, Greek, Hungarian, Italian, Norwegian, Portuguese, Romanian, Russian, Spanish, Swedish, Turkish.
+Supported languages: Arabic, Danish, Dutch, English, Finnish, French, German, Hungarian, Italian, Norwegian, Portuguese, Romanian, Russian, Spanish, Swedish, Tamil, Turkish.
 
 ### Distributed Search (gRPC)
 
 Shard large indexes across multiple nodes and query them as one:
 
 ```rust
-use bm25_turbo::distributed::{QueryCoordinator, start_shard_server};
+use bm25_turbo::distributed::{QueryCoordinator, ShardEndpoint};
 
-// Start shard servers (one per machine/core)
-start_shard_server(shard_index, "[::1]:50051").await?;
+// Define shard endpoints (one per machine/core)
+let shards = vec![
+    ShardEndpoint { endpoint: "http://[::1]:50051".into(), shard_id: 0, doc_id_offset: 0 },
+    ShardEndpoint { endpoint: "http://[::1]:50052".into(), shard_id: 1, doc_id_offset: 500_000 },
+];
 
 // Coordinator fans out queries and merges results
-let coordinator = QueryCoordinator::connect(&[
-    "http://[::1]:50051",
-    "http://[::1]:50052",
-]).await?;
-
-let results = coordinator.search("distributed query", 10).await?;
+let coordinator = QueryCoordinator::connect(shards).await?;
+let results = coordinator.query("distributed query", 10).await?;
 ```
 
 ## Interfaces
@@ -329,7 +327,7 @@ cargo install bm25-turbo-cli
 pip install bm25-turbo
 ```
 
-Requires Python 3.8-3.13. Pre-built wheels for Linux (x86_64, aarch64), macOS (x86_64, aarch64), and Windows (x86_64).
+Requires Python 3.9-3.13. Pre-built wheels for Linux (x86_64, aarch64), macOS (x86_64, aarch64), and Windows (x86_64).
 
 ### WASM / npm
 
@@ -427,9 +425,9 @@ Datasets are automatically downloaded from the [BEIR benchmark suite](https://gi
 BM25 Turbo is ideal as the retrieval stage in RAG pipelines. Index your knowledge base once, then retrieve relevant context for every LLM query:
 
 ```rust
-let context_docs = index.search(&user_question, 5)?;
-let context = context_docs.iter()
-    .map(|(id, _)| &documents[*id as usize])
+let results = index.search(&user_question, 5)?;
+let context = results.doc_ids.iter()
+    .map(|id| documents[*id as usize].as_str())
     .collect::<Vec<_>>()
     .join("\n\n");
 // Feed context to your LLM

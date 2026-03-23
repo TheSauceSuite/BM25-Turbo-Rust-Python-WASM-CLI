@@ -46,7 +46,7 @@ fn parse_method(method: &str) -> PyResult<Method> {
 ///
 /// # Example
 /// ```python
-/// from bm25_turbo import BM25
+/// from bm25_turbo_python import BM25
 ///
 /// engine = BM25(method="lucene", k1=1.5, b=0.75)
 /// engine.index(["document one", "document two", "document three"])
