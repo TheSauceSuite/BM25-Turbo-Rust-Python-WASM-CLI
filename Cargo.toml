@@ -22,6 +22,6 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/TheSauceSuite/BM25-Turbo-Rust-Python-WASM-CLI-"
 homepage = "https://github.com/TheSauceSuite/BM25-Turbo-Rust-Python-WASM-CLI-"
 description = "The fastest BM25 information retrieval engine — 28K QPS on 8.8M docs"
-keywords = ["bm25", "search", "information-retrieval", "ranking", "nlp"]
+keywords = ["bm25", "search", "retrieval", "ranking", "nlp"]
 categories = ["algorithms", "text-processing", "database-implementations"]
 authors = ["The Sauce Suite"]
