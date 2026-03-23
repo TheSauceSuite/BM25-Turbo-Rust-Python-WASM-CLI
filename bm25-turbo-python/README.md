@@ -20,7 +20,6 @@ use bm25_turbo::{BM25Builder, Method};
 let index = BM25Builder::new()
     .method(Method::Lucene)       // Robertson, Lucene, ATIRE, BM25L, BM25+
     .k1(1.5).b(0.75)
-    .with_bmw(true)               // Enable BMW pruning for large corpora
     .build_from_corpus(&[
         "Rust is a systems programming language",
         "BM25 is a ranking function used in information retrieval",
@@ -28,8 +27,8 @@ let index = BM25Builder::new()
     ])?;
 
 let results = index.search("information retrieval", 10)?;
-for (doc_id, score) in &results {
-    println!("doc {} → {:.4}", doc_id, score);
+for (id, score) in results.doc_ids.iter().zip(results.scores.iter()) {
+    println!("doc {} → {:.4}", id, score);
 }
 ```
 
@@ -96,12 +95,15 @@ All variants support tunable `k1`, `b`, and `delta` parameters.
 Skip non-competitive documents during top-k retrieval. Essential for million-document corpora:
 
 ```rust
-let mut index = BM25Builder::new()
-    .with_bmw(true)
+let index = BM25Builder::new()
     .build_from_corpus(&corpus)?;
 
-// BMW automatically prunes low-scoring blocks
-let results = index.search_bmw(10, "distributed systems")?;
+// BMW pruning via WAL's query strategy
+let wal = index.enable_wal()?;
+let results = index.search_with_strategy(
+    &wal, "distributed systems", 10,
+    bm25_turbo::wal::QueryStrategy::Fast, // BMW pruning
+)?;
 ```
 
 BMW partitions the score matrix into blocks and maintains per-block upper bounds. During query evaluation, entire blocks are skipped when their maximum possible contribution can't beat the current k-th best score. This reduces the number of documents touched from millions to thousands.
@@ -111,16 +113,17 @@ BMW partitions the score matrix into blocks and maintains per-block upper bounds
 Save indexes to disk and reload them instantly with zero-copy memory mapping:
 
 ```rust
-use bm25_turbo::persistence::{save_index, load_index, mmap_index};
+use bm25_turbo::persistence;
+use std::path::Path;
 
 // Save (serializes CSC matrix + vocabulary + parameters)
-save_index(&index, "my_index.bm25")?;
+persistence::save(&index, Path::new("my_index.bm25"))?;
 
 // Standard load (deserialize into RAM)
-let index = load_index("my_index.bm25")?;
+let index = persistence::load(Path::new("my_index.bm25"))?;
 
 // Memory-mapped load (instant, zero-copy, ideal for huge indexes)
-let index = unsafe { mmap_index("my_index.bm25")? };
+let mmap_index = persistence::load_mmap(Path::new("my_index.bm25"))?;
 ```
 
 Memory-mapped indexes load in **microseconds** regardless of size. The OS pages data in on demand — a 10GB index starts serving queries immediately without waiting for the full file to be read.
@@ -130,12 +133,13 @@ Memory-mapped indexes load in **microseconds** regardless of size. The OS pages 
 Index corpora larger than available memory by processing documents in configurable chunks:
 
 ```rust
-use bm25_turbo::streaming::StreamingBuilder;
+use bm25_turbo::{StreamingBuilder, Method};
 
-let index = StreamingBuilder::new()
+let mut builder = StreamingBuilder::new()
     .chunk_size(100_000)          // Process 100K docs at a time
-    .method(Method::Lucene)
-    .build_from_iter(documents)?; // Accepts any Iterator<Item = &str>
+    .method(Method::Lucene);
+builder.add_documents(&["doc one", "doc two", "doc three"]);
+let index = builder.build()?;
 ```
 
 Peak memory: `O(chunk_size × avg_tokens)` instead of `O(total_corpus)`.
@@ -145,16 +149,16 @@ Peak memory: `O(chunk_size × avg_tokens)` instead of `O(total_corpus)`.
 Add and delete documents without rebuilding the entire index:
 
 ```rust
-use bm25_turbo::wal::WalIndex;
+use bm25_turbo::wal::WriteAheadLog;
 
-let mut wal = WalIndex::new(base_index);
+let mut wal = WriteAheadLog::new();
 
 // Incremental updates
-wal.add_documents(&["new document about Rust"])?;
+index.add_documents(&mut wal, &["new document about Rust"])?;
 wal.delete_documents(&[42, 87])?;
 
 // Compact when the WAL grows large
-wal.compact()?;
+index.compact(&mut wal)?;
 ```
 
 ### Built-in Tokenizer
@@ -162,11 +166,12 @@ wal.compact()?;
 17 language stemmers with configurable stopword removal:
 
 ```rust
-use bm25_turbo::tokenizer::{Tokenizer, Algorithm};
+use bm25_turbo::Tokenizer;
+use rust_stemmers::Algorithm;
 
 let tokenizer = Tokenizer::builder()
     .stemmer(Algorithm::English)
-    .stopwords(&["the", "a", "an", "is", "are"])
+    .stopwords(vec!["the".into(), "a".into(), "an".into(), "is".into()])
     .build();
 
 let tokens = tokenizer.tokenize("Running distributed systems at scale");
@@ -200,7 +205,7 @@ let results = coordinator.search("distributed query", 10).await?;
 
 ```bash
 # Index a corpus
-bm25-turbo index --input corpus.jsonl --output index.bm25 --format jsonl --field text
+bm25-turbo index --input corpus.jsonl --output index.bm25 --field text
 
 # Search
 bm25-turbo search --index index.bm25 --query "information retrieval" -k 10
@@ -239,7 +244,7 @@ curl http://localhost:8080/stats
 Expose BM25 search as a tool for AI agents via the [Model Context Protocol](https://modelcontextprotocol.io/):
 
 ```bash
-bm25-turbo serve --index index.bm25 --mcp --port 8080
+bm25-turbo mcp --index index.bm25 --port 8080
 ```
 
 The MCP server exposes two tools:
@@ -251,40 +256,37 @@ Works with Claude, ChatGPT, and any MCP-compatible agent framework.
 ### Python Bindings
 
 ```python
-import bm25_turbo
+from bm25_turbo_python import BM25
 
 # Build an index
-index = bm25_turbo.build_index(
-    ["Rust is fast", "Python is flexible", "BM25 ranks documents"],
-    method="lucene",
-    k1=1.5,
-    b=0.75,
-)
+engine = BM25(method="lucene", k1=1.5, b=0.75)
+engine.index(["Rust is fast", "Python is flexible", "BM25 ranks documents"])
 
-# Search
-results = index.search("fast programming", k=5)
-for doc_id, score in results:
+# Search — returns (doc_ids, scores) tuple
+doc_ids, scores = engine.search("fast programming", k=5)
+for doc_id, score in zip(doc_ids, scores):
     print(f"  doc {doc_id}: {score:.4f}")
 
 # Save / load
-index.save("my_index.bm25")
-index = bm25_turbo.load_index("my_index.bm25")
+engine.save("my_index.bm25")
+engine = BM25.load("my_index.bm25")
 ```
 
 ### WASM (Browser / Edge)
 
 ```javascript
-import init, { WasmBM25Index } from 'bm25-turbo-wasm';
+import init, { WasmBM25 } from 'bm25-turbo-wasm';
 
 await init();
 
-const index = new WasmBM25Index("lucene", 1.5, 0.75);
-index.addDocuments([
-    "JavaScript runs everywhere",
-    "WebAssembly enables near-native performance",
-    "BM25 is a proven ranking algorithm",
-]);
-index.build();
+const index = new WasmBM25(
+    ["JavaScript runs everywhere",
+     "WebAssembly enables near-native performance",
+     "BM25 is a proven ranking algorithm"],
+    "lucene",  // method (optional)
+    1.5,       // k1 (optional)
+    0.75       // b (optional)
+);
 
 const results = index.search("native performance", 5);
 console.log(results); // [{doc_id: 1, score: 0.82}, ...]
