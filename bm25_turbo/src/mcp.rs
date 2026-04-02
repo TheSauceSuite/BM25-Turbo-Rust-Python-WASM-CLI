@@ -174,11 +174,9 @@ pub fn mcp_router(index: Arc<BM25Index>) -> axum::Router {
     };
 
     let session_manager = Arc::new(LocalSessionManager::default());
-    let config = StreamableHttpServerConfig {
-        stateful_mode: false,
-        json_response: true,
-        ..Default::default()
-    };
+    let mut config = StreamableHttpServerConfig::default();
+    config.stateful_mode = false;
+    config.json_response = true;
 
     let mcp_service = StreamableHttpService::new(
         move || Ok(Bm25McpService::new(index.clone())),
