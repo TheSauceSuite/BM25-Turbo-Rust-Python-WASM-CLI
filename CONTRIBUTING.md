@@ -197,9 +197,44 @@ GitHub Actions runs on every push and PR:
 3. Make your changes
 4. Run tests (`cargo test --workspace --exclude bm25-turbo-wasm --exclude bm25-turbo-python`)
 5. Run clippy (`cargo clippy -p bm25_turbo -p bm25-turbo-cli --all-targets -- -D warnings`)
-6. Commit and push
-7. Open a pull request
+6. Sign off every commit (see DCO below)
+7. Push and open a pull request
+8. Sign the CLA when prompted by the bot
+
+### DCO (Developer Certificate of Origin)
+
+All commits must include a `Signed-off-by` line certifying you wrote the code and have the right to submit it. Add it automatically with the `-s` flag:
+
+```bash
+git commit -s -m "Add new feature"
+```
+
+This produces:
+
+```
+Add new feature
+
+Signed-off-by: Your Name <your@email.com>
+```
+
+If you forget, amend the commit:
+
+```bash
+git commit --amend -s
+```
+
+The DCO check will block your PR until all commits are signed off.
+
+### CLA (Contributor License Agreement)
+
+On your first PR, the CLA bot will ask you to sign by commenting:
+
+> I have read the CLA Document and I hereby sign the CLA
+
+This is a one-time signature that grants the maintainer the right to include your contribution under both the open source (AGPL-3.0) and commercial licenses. The full CLA text is in [CLA.md](CLA.md).
+
+Both DCO and CLA are required for all pull requests.
 
 ## License
 
-By contributing, you agree that your contributions will be dual-licensed under MIT and Apache-2.0.
+BM25 Turbo is dual-licensed under AGPL-3.0 (open source) and a commercial license. By contributing, you agree to the terms in [CLA.md](CLA.md), which grants the maintainer the right to distribute your contributions under both licenses.
